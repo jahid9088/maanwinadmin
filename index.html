@@ -1,0 +1,1723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport"
+content="width=device-width,initial-scale=1,maximum-scale=1,user-scalable=no">
+
+<title>EP STORE Admin</title>
+
+<style>
+:root{
+    --bg:#05070b;
+    --card:#0c121a;
+    --cyan:#00eaff;
+    --green:#00f5a0;
+    --red:#ff174d;
+    --text:#f5f7fa;
+    --muted:#728093;
+    --line:#192432;
+}
+
+*{
+    box-sizing:border-box;
+    -webkit-tap-highlight-color:transparent;
+}
+
+html,body{
+    margin:0;
+    min-height:100%;
+    background:
+    radial-gradient(circle at 50% -10%,
+    rgba(0,234,255,.12),
+    transparent 35%),
+    var(--bg);
+
+    color:var(--text);
+    font-family:Arial,sans-serif;
+}
+
+button,input{
+    font-family:inherit;
+}
+
+.container{
+    width:100%;
+    max-width:760px;
+    margin:auto;
+    padding:16px 13px 40px;
+}
+
+/* HEADER */
+
+.header{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-bottom:16px;
+}
+
+.brand{
+    display:flex;
+    align-items:center;
+    gap:11px;
+}
+
+.logo{
+    width:45px;
+    height:45px;
+    border-radius:14px;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    color:#001016;
+    font-weight:900;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--green)
+    );
+
+    box-shadow:
+    0 0 25px rgba(0,234,255,.2);
+}
+
+.title{
+    font-size:16px;
+    font-weight:900;
+    letter-spacing:.6px;
+}
+
+.live{
+    margin-top:4px;
+    display:flex;
+    align-items:center;
+    gap:6px;
+    color:var(--green);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1px;
+}
+
+.liveDot{
+    width:6px;
+    height:6px;
+    border-radius:50%;
+    background:var(--green);
+    box-shadow:0 0 9px var(--green);
+}
+
+.refresh{
+    height:38px;
+    padding:0 14px;
+    border-radius:11px;
+    border:1px solid rgba(0,234,255,.16);
+    background:#080d13;
+    color:var(--cyan);
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:.7px;
+}
+
+.refresh:disabled{
+    opacity:.45;
+}
+
+/* STATS */
+
+.stats{
+    display:grid;
+    grid-template-columns:repeat(2,1fr);
+    gap:10px;
+}
+
+.stat{
+    padding:15px;
+    min-height:92px;
+    border-radius:18px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #0d141e,
+        #080c12
+    );
+
+    border:
+    1px solid rgba(255,255,255,.055);
+}
+
+.statLabel{
+    color:#667587;
+    font-size:9px;
+    font-weight:900;
+    letter-spacing:1.2px;
+}
+
+.statValue{
+    margin-top:8px;
+    font-size:30px;
+    font-weight:900;
+}
+
+.cyan{
+    color:var(--cyan);
+}
+
+.green{
+    color:var(--green);
+}
+
+/* TOOLBAR */
+
+.toolbar{
+    display:grid;
+    grid-template-columns:1fr 105px;
+    gap:9px;
+    margin-top:12px;
+}
+
+.search{
+    width:100%;
+    height:47px;
+    border-radius:14px;
+    border:1px solid var(--line);
+    outline:none;
+    background:#080d13;
+    color:#fff;
+    padding:0 14px;
+    font-size:12px;
+}
+
+.addBtn{
+    border:0;
+    border-radius:14px;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--green)
+    );
+
+    color:#001016;
+    font-size:10px;
+    font-weight:900;
+}
+
+/* USERS */
+
+.sectionTop{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin:19px 2px 10px;
+}
+
+.sectionTop strong{
+    font-size:12px;
+}
+
+#resultCount{
+    color:#637183;
+    font-size:9px;
+}
+
+#userList{
+    display:flex;
+    flex-direction:column;
+    gap:9px;
+}
+
+.card{
+    padding:14px 13px;
+    border-radius:17px;
+
+    background:
+    linear-gradient(
+        145deg,
+        #0d141d,
+        #080c12
+    );
+
+    border:
+    1px solid rgba(255,255,255,.055);
+}
+
+.cardTop{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    gap:10px;
+}
+
+.phone{
+    font-size:15px;
+    font-weight:900;
+    letter-spacing:.5px;
+}
+
+.status{
+    padding:5px 8px;
+    border-radius:20px;
+    color:var(--green);
+    background:rgba(0,245,160,.08);
+    border:1px solid rgba(0,245,160,.16);
+    font-size:8px;
+    font-weight:900;
+}
+
+.meta{
+    margin-top:8px;
+    color:#798697;
+    font-size:10px;
+    line-height:1.7;
+}
+
+.meta b{
+    color:#b8c3ce;
+}
+
+.cardBottom{
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    margin-top:11px;
+    padding-top:10px;
+    border-top:1px solid rgba(255,255,255,.045);
+}
+
+.date{
+    color:#5d6978;
+    font-size:8px;
+}
+
+.delete{
+    height:30px;
+    padding:0 12px;
+    border-radius:9px;
+    border:1px solid rgba(255,23,77,.25);
+    background:rgba(255,23,77,.08);
+    color:#ff526d;
+    font-size:8px;
+    font-weight:900;
+}
+
+.empty{
+    padding:38px 15px;
+    text-align:center;
+    color:#586676;
+    border-radius:17px;
+    background:#080d13;
+    border:1px dashed rgba(255,255,255,.07);
+    font-size:11px;
+}
+
+/* MODAL */
+
+.modal{
+    position:fixed;
+    inset:0;
+    z-index:9999;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    padding:22px;
+
+    background:rgba(0,0,0,.80);
+    backdrop-filter:blur(8px);
+
+    opacity:0;
+    pointer-events:none;
+
+    transition:.20s;
+}
+
+.modal.show{
+    opacity:1;
+    pointer-events:auto;
+}
+
+.modalCard{
+    width:100%;
+    max-width:330px;
+    padding:20px;
+
+    border-radius:21px;
+
+    background:
+    linear-gradient(
+        150deg,
+        #101821,
+        #070b10
+    );
+
+    border:
+    1px solid rgba(0,234,255,.16);
+}
+
+.modalTitle{
+    font-size:17px;
+    font-weight:900;
+}
+
+.modalSub{
+    margin:6px 0 15px;
+    color:#748192;
+    font-size:10px;
+    line-height:1.5;
+}
+
+.numberInput{
+    width:100%;
+    height:47px;
+    border-radius:13px;
+    border:1px solid var(--line);
+    background:#070c12;
+    color:#fff;
+    outline:none;
+    padding:0 14px;
+    font-size:14px;
+}
+
+#error{
+    margin-top:8px;
+    min-height:14px;
+    color:#ff526e;
+    font-size:10px;
+}
+
+.modalButtons{
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:8px;
+    margin-top:12px;
+}
+
+.cancel,
+.save{
+    height:43px;
+    border-radius:12px;
+    font-weight:900;
+}
+
+.cancel{
+    border:1px solid rgba(255,255,255,.08);
+    background:#080d13;
+    color:#788697;
+}
+
+.save{
+    border:0;
+
+    background:
+    linear-gradient(
+        135deg,
+        var(--cyan),
+        var(--green)
+    );
+
+    color:#001016;
+}
+
+/* TOAST */
+
+#toast{
+    position:fixed;
+    left:50%;
+    bottom:24px;
+    z-index:99999;
+
+    transform:
+    translateX(-50%)
+    translateY(25px);
+
+    opacity:0;
+
+    padding:11px 16px;
+    border-radius:12px;
+
+    background:#111922;
+    color:#fff;
+
+    border:
+    1px solid rgba(255,255,255,.08);
+
+    font-size:10px;
+
+    transition:.22s;
+
+    pointer-events:none;
+}
+
+#toast.show{
+    opacity:1;
+
+    transform:
+    translateX(-50%)
+    translateY(0);
+}
+</style>
+</head>
+
+<body>
+
+<div class="container">
+
+    <div class="header">
+
+        <div class="brand">
+
+            <div class="logo">
+                EP
+            </div>
+
+            <div>
+
+                <div class="title">
+                    EP STORE ADMIN
+                </div>
+
+                <div class="live">
+
+                    <span class="liveDot"></span>
+
+                    DATABASE READY
+
+                </div>
+
+            </div>
+
+        </div>
+
+        <button
+        id="refreshBtn"
+        class="refresh"
+        onclick="loadUsers(true)">
+
+            REFRESH
+
+        </button>
+
+    </div>
+
+
+    <div class="stats">
+
+        <div class="stat">
+
+            <div class="statLabel">
+                TOTAL USERS
+            </div>
+
+            <div
+            id="totalUsers"
+            class="statValue cyan">
+
+                0
+
+            </div>
+
+        </div>
+
+
+        <div class="stat">
+
+            <div class="statLabel">
+                ADMIN ADDED
+            </div>
+
+            <div
+            id="adminAdded"
+            class="statValue green">
+
+                0
+
+            </div>
+
+        </div>
+
+    </div>
+
+
+    <div class="toolbar">
+
+        <input
+        id="search"
+        class="search"
+        placeholder="Search number / device..."
+        oninput="renderUsers()">
+
+        <button
+        class="addBtn"
+        onclick="openAdd()">
+
+            + ADD USER
+
+        </button>
+
+    </div>
+
+
+    <div class="sectionTop">
+
+        <strong>
+            ALL USERS
+        </strong>
+
+        <span id="resultCount">
+            0 records
+        </span>
+
+    </div>
+
+
+    <div id="userList">
+
+        <div class="empty">
+            Loading...
+        </div>
+
+    </div>
+
+</div>
+
+
+<div
+id="modal"
+class="modal">
+
+    <div class="modalCard">
+
+        <div class="modalTitle">
+            Add User
+        </div>
+
+        <div class="modalSub">
+            Minimum 5 digits aur maximum 15 digits supported.
+        </div>
+
+        <input
+        id="phoneInput"
+        class="numberInput"
+        inputmode="numeric"
+        maxlength="15"
+        placeholder="5 - 15 digit number">
+
+        <div id="error"></div>
+
+        <div class="modalButtons">
+
+            <button
+            class="cancel"
+            onclick="closeAdd()">
+
+                CANCEL
+
+            </button>
+
+            <button
+            id="saveBtn"
+            class="save"
+            onclick="addUser()">
+
+                ADD USER
+
+            </button>
+
+        </div>
+
+    </div>
+
+</div>
+
+
+<div id="toast"></div>
+
+
+<script>
+
+/* =========================================================
+   FIREBASE
+========================================================= */
+
+const DATABASE =
+"https://newafents-default-rtdb.firebaseio.com";
+
+const USERS_URL =
+DATABASE + "/users";
+
+
+/* =========================================================
+   STATE
+========================================================= */
+
+let users = [];
+
+let loadingUsers = false;
+
+let toastTimer = null;
+
+
+/* =========================================================
+   LOAD USERS
+   ONLY:
+   1. Page first open
+   2. Manual REFRESH
+
+   NO 5 SECOND AUTO REFRESH.
+========================================================= */
+
+async function loadUsers(showToast){
+
+    if(loadingUsers){
+        return;
+    }
+
+    loadingUsers = true;
+
+    const btn =
+    document.getElementById(
+        "refreshBtn"
+    );
+
+    btn.disabled = true;
+
+    const oldText =
+    btn.innerText;
+
+    btn.innerText =
+    "LOADING";
+
+
+    try{
+
+        const response =
+        await fetch(
+            USERS_URL + ".json",
+            {
+                cache:"no-store"
+            }
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Firebase error "
+                +
+                response.status
+            );
+        }
+
+
+        const data =
+        await response.json();
+
+
+        const newUsers =
+        [];
+
+
+        if(data){
+
+            Object.keys(data)
+            .forEach(function(key){
+
+                const item =
+                data[key];
+
+
+                if(
+                    item !== null
+                    &&
+                    typeof item === "object"
+                ){
+
+                    newUsers.push({
+
+                        key:key,
+
+                        ...item
+
+                    });
+
+                }else{
+
+                    newUsers.push({
+
+                        key:key,
+
+                        phone:key,
+
+                        status:
+                        "registered"
+
+                    });
+
+                }
+
+            });
+
+        }
+
+
+        newUsers.sort(
+            function(a,b){
+
+                const timeA =
+                Number(
+                    a.registrationTime
+                    ||
+                    a.createdAt
+                    ||
+                    0
+                );
+
+                const timeB =
+                Number(
+                    b.registrationTime
+                    ||
+                    b.createdAt
+                    ||
+                    0
+                );
+
+                return timeB - timeA;
+            }
+        );
+
+
+        /*
+         * Data memory me replace hota hai.
+         * Page reload nahi hota.
+         */
+        users =
+        newUsers;
+
+
+        updateStats();
+
+        renderUsers();
+
+
+        if(showToast){
+
+            toast(
+                "Users refreshed"
+            );
+        }
+
+
+    }catch(error){
+
+        toast(
+            error.message
+        );
+
+    }finally{
+
+        loadingUsers =
+        false;
+
+        btn.disabled =
+        false;
+
+        btn.innerText =
+        oldText;
+    }
+}
+
+
+/* =========================================================
+   STATS
+========================================================= */
+
+function updateStats(){
+
+    document.getElementById(
+        "totalUsers"
+    ).innerText =
+    users.length;
+
+
+    const adminAdded =
+    users.filter(
+        function(user){
+
+            return String(
+                user.source || ""
+            ).toLowerCase()
+            ===
+            "admin";
+        }
+    ).length;
+
+
+    document.getElementById(
+        "adminAdded"
+    ).innerText =
+    adminAdded;
+}
+
+
+/* =========================================================
+   USERS
+========================================================= */
+
+function renderUsers(){
+
+    const search =
+    document.getElementById(
+        "search"
+    )
+    .value
+    .trim()
+    .toLowerCase();
+
+
+    const result =
+    users.filter(
+        function(user){
+
+            if(!search){
+
+                return true;
+            }
+
+
+            const text = [
+
+                user.phone,
+
+                user.key,
+
+                user.deviceName,
+
+                user.deviceModel,
+
+                user.manufacturer,
+
+                user.androidVersion,
+
+                user.status,
+
+                user.source
+
+            ]
+            .join(" ")
+            .toLowerCase();
+
+
+            return text.includes(
+                search
+            );
+        }
+    );
+
+
+    document.getElementById(
+        "resultCount"
+    ).innerText =
+
+    result.length
+    +
+    " records";
+
+
+    const list =
+    document.getElementById(
+        "userList"
+    );
+
+
+    if(
+        result.length === 0
+    ){
+
+        list.innerHTML =
+        '<div class="empty">'
+        +
+        'No users found'
+        +
+        '</div>';
+
+        return;
+    }
+
+
+    let html =
+    "";
+
+
+    result.forEach(
+        function(user){
+
+            const phone =
+            user.phone
+            ||
+            user.key
+            ||
+            "-";
+
+
+            const status =
+            user.status
+            ||
+            "registered";
+
+
+            const device =
+            user.deviceName
+            ||
+            user.deviceModel
+            ||
+            "Device info unavailable";
+
+
+            const manufacturer =
+            user.manufacturer
+            ||
+            "-";
+
+
+            const android =
+            user.androidVersion
+            ?
+            "Android "
+            +
+            user.androidVersion
+            :
+            "Android -";
+
+
+            const source =
+            user.source
+            ||
+            "app";
+
+
+            const date =
+            formatDate(
+
+                user.registrationTime
+                ||
+                user.createdAt
+                ||
+                user.lastSeen
+
+            );
+
+
+            html +=
+
+            '<div class="card">'
+
+            +
+
+            '<div class="cardTop">'
+
+            +
+
+            '<div class="phone">'
+            +
+            escapeHTML(phone)
+            +
+            '</div>'
+
+            +
+
+            '<div class="status">'
+            +
+            escapeHTML(
+                String(status)
+                .toUpperCase()
+            )
+            +
+            '</div>'
+
+            +
+
+            '</div>'
+
+            +
+
+            '<div class="meta">'
+
+            +
+
+            '<b>Device:</b> '
+            +
+            escapeHTML(device)
+
+            +
+
+            '<br>'
+
+            +
+
+            '<b>Manufacturer:</b> '
+            +
+            escapeHTML(manufacturer)
+
+            +
+
+            '<br>'
+
+            +
+
+            '<b>OS:</b> '
+            +
+            escapeHTML(android)
+
+            +
+
+            ' &nbsp; • &nbsp; '
+
+            +
+
+            '<b>Source:</b> '
+            +
+            escapeHTML(source)
+
+            +
+
+            '</div>'
+
+            +
+
+            '<div class="cardBottom">'
+
+            +
+
+            '<div class="date">'
+            +
+            escapeHTML(date)
+            +
+            '</div>'
+
+            +
+
+            '<button class="delete" '
+            +
+            'onclick="deleteUser(\''
+            +
+            safeJS(user.key)
+            +
+            '\')">'
+            +
+            'DELETE'
+            +
+            '</button>'
+
+            +
+
+            '</div>'
+
+            +
+
+            '</div>';
+        }
+    );
+
+
+    list.innerHTML =
+    html;
+}
+
+
+/* =========================================================
+   MODAL
+========================================================= */
+
+function openAdd(){
+
+    document.getElementById(
+        "phoneInput"
+    ).value =
+    "";
+
+
+    document.getElementById(
+        "error"
+    ).innerText =
+    "";
+
+
+    document.getElementById(
+        "modal"
+    )
+    .classList
+    .add(
+        "show"
+    );
+
+
+    setTimeout(
+        function(){
+
+            document.getElementById(
+                "phoneInput"
+            ).focus();
+
+        },
+        100
+    );
+}
+
+
+function closeAdd(){
+
+    document.getElementById(
+        "modal"
+    )
+    .classList
+    .remove(
+        "show"
+    );
+}
+
+
+/* =========================================================
+   ADD USER
+   SUPPORTS 5 - 15 DIGITS
+========================================================= */
+
+async function addUser(){
+
+    let phone =
+    document.getElementById(
+        "phoneInput"
+    )
+    .value
+    .replace(
+        /\D/g,
+        ""
+    );
+
+
+    const error =
+    document.getElementById(
+        "error"
+    );
+
+
+    const button =
+    document.getElementById(
+        "saveBtn"
+    );
+
+
+    error.innerText =
+    "";
+
+
+    /*
+     * OLD:
+     * /^\d{10}$/
+     *
+     * NEW:
+     * 5 to 15 digits
+     */
+    if(
+        !/^\d{5,15}$/.test(
+            phone
+        )
+    ){
+
+        error.innerText =
+        "Number 5 se 15 digits ke beech hona chahiye.";
+
+        return;
+    }
+
+
+    /*
+     * Local duplicate check.
+     * Firebase ko unnecessary request nahi.
+     */
+    const localExists =
+    users.some(
+        function(user){
+
+            return String(
+                user.key
+                ||
+                user.phone
+                ||
+                ""
+            )
+            ===
+            phone;
+        }
+    );
+
+
+    if(localExists){
+
+        error.innerText =
+        "Ye number already added hai.";
+
+        return;
+    }
+
+
+    button.disabled =
+    true;
+
+    button.innerText =
+    "ADDING...";
+
+
+    try{
+
+        /*
+         * Firebase exact duplicate verify.
+         */
+        const check =
+        await fetch(
+
+            USERS_URL
+            +
+            "/"
+            +
+            encodeURIComponent(phone)
+            +
+            ".json",
+
+            {
+                cache:"no-store"
+            }
+        );
+
+
+        if(!check.ok){
+
+            throw new Error(
+                "Database check failed"
+            );
+        }
+
+
+        const existing =
+        await check.json();
+
+
+        if(
+            existing !== null
+        ){
+
+            error.innerText =
+            "Ye number already added hai.";
+
+            return;
+        }
+
+
+        const now =
+        Date.now();
+
+
+        const newUser = {
+
+            phone:
+            phone,
+
+            status:
+            "registered",
+
+            source:
+            "admin",
+
+            createdAt:
+            now,
+
+            registrationTime:
+            now,
+
+            lastSeen:
+            now
+
+        };
+
+
+        const response =
+        await fetch(
+
+            USERS_URL
+            +
+            "/"
+            +
+            encodeURIComponent(phone)
+            +
+            ".json",
+
+            {
+
+                method:
+                "PUT",
+
+                headers:{
+
+                    "Content-Type":
+                    "application/json"
+
+                },
+
+                body:
+                JSON.stringify(
+                    newUser
+                )
+            }
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Add failed "
+                +
+                response.status
+            );
+        }
+
+
+        /*
+         * IMPORTANT:
+         * Firebase se full database reload nahi.
+         * User directly local list me add.
+         */
+        users.unshift({
+
+            key:
+            phone,
+
+            ...newUser
+
+        });
+
+
+        updateStats();
+
+        renderUsers();
+
+        closeAdd();
+
+
+        toast(
+            "User added successfully"
+        );
+
+
+    }catch(e){
+
+        error.innerText =
+        e.message;
+
+    }finally{
+
+        button.disabled =
+        false;
+
+        button.innerText =
+        "ADD USER";
+    }
+}
+
+
+/* =========================================================
+   DELETE USER
+========================================================= */
+
+async function deleteUser(
+    key
+){
+
+    if(!key){
+
+        return;
+    }
+
+
+    const confirmDelete =
+    confirm(
+        "Delete user "
+        +
+        key
+        +
+        "?"
+    );
+
+
+    if(!confirmDelete){
+
+        return;
+    }
+
+
+    try{
+
+        const response =
+        await fetch(
+
+            USERS_URL
+            +
+            "/"
+            +
+            encodeURIComponent(key)
+            +
+            ".json",
+
+            {
+                method:
+                "DELETE"
+            }
+        );
+
+
+        if(!response.ok){
+
+            throw new Error(
+                "Delete failed "
+                +
+                response.status
+            );
+        }
+
+
+        /*
+         * Full database refresh nahi.
+         * Sirf deleted user array se remove.
+         */
+        users =
+        users.filter(
+            function(user){
+
+                return String(
+                    user.key
+                )
+                !==
+                String(
+                    key
+                );
+            }
+        );
+
+
+        updateStats();
+
+        renderUsers();
+
+
+        toast(
+            "User deleted"
+        );
+
+
+    }catch(e){
+
+        toast(
+            e.message
+        );
+    }
+}
+
+
+/* =========================================================
+   DATE
+========================================================= */
+
+function formatDate(
+    value
+){
+
+    if(!value){
+
+        return "No date";
+    }
+
+
+    const number =
+    Number(
+        value
+    );
+
+
+    if(
+        !Number.isFinite(
+            number
+        )
+    ){
+
+        return "No date";
+    }
+
+
+    try{
+
+        return new Date(
+            number
+        )
+        .toLocaleString(
+            "en-IN",
+            {
+                day:
+                "2-digit",
+
+                month:
+                "short",
+
+                year:
+                "numeric",
+
+                hour:
+                "2-digit",
+
+                minute:
+                "2-digit"
+            }
+        );
+
+    }catch(e){
+
+        return "No date";
+    }
+}
+
+
+/* =========================================================
+   ESCAPE
+========================================================= */
+
+function escapeHTML(
+    value
+){
+
+    return String(
+        value == null
+        ?
+        ""
+        :
+        value
+    )
+    .replace(
+        /&/g,
+        "&amp;"
+    )
+    .replace(
+        /</g,
+        "&lt;"
+    )
+    .replace(
+        />/g,
+        "&gt;"
+    )
+    .replace(
+        /"/g,
+        "&quot;"
+    )
+    .replace(
+        /'/g,
+        "&#039;"
+    );
+}
+
+
+function safeJS(
+    value
+){
+
+    return String(
+        value || ""
+    )
+    .replace(
+        /\\/g,
+        "\\\\"
+    )
+    .replace(
+        /'/g,
+        "\\'"
+    );
+}
+
+
+/* =========================================================
+   TOAST
+========================================================= */
+
+function toast(
+    message
+){
+
+    const element =
+    document.getElementById(
+        "toast"
+    );
+
+
+    element.innerText =
+    message;
+
+
+    element.classList.add(
+        "show"
+    );
+
+
+    clearTimeout(
+        toastTimer
+    );
+
+
+    toastTimer =
+    setTimeout(
+        function(){
+
+            element.classList.remove(
+                "show"
+            );
+
+        },
+        1900
+    );
+}
+
+
+/* =========================================================
+   BACKDROP
+========================================================= */
+
+document.getElementById(
+    "modal"
+)
+.addEventListener(
+    "click",
+    function(event){
+
+        if(
+            event.target === this
+        ){
+
+            closeAdd();
+        }
+    }
+);
+
+
+/* =========================================================
+   FIRST LOAD ONLY
+
+   ❌ NO setInterval()
+   ❌ NO AUTO REFRESH
+========================================================= */
+
+loadUsers(false);
+
+</script>
+
+</body>
+</html>
